@@ -1,0 +1,39 @@
+name: Release Shared Workflow
+
+on:
+    # every 24h
+    schedule:
+      - cron:  '0 0 * * *'
+    workflow_call:
+    
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+
+    env:
+      CDSAPI_KEY: ${{ secrets.CDSAPI_KEY }} 
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - uses: actions/setup-python@v3
+      with:
+        python-version: '3.10'
+
+    - name: Setup 
+      run: |
+          python3.10 -m pip install 'cdsapi>=0.7.2'
+
+    - name: Run Downloader
+      run: |
+        python3.10 download.py
+        mv *.grib europe.grib
+
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: autoortho_osx_*.bin
+        prerelease: false
+
+
