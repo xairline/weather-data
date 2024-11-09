@@ -25,6 +25,7 @@ jobs:
 
     - name: Setup 
       run: |
+        env
         echo 'url: $CDSAPI_URL' > ~/.cdsapirc
         echo 'key: $CDSAPI_KEY' >> ~/.cdsapirc
         python3.10 -m pip install 'cdsapi>=0.7.2'
