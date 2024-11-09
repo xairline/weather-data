@@ -25,12 +25,13 @@ jobs:
 
     - name: Setup 
       run: |
-        python3.10 -m pip install 'cdsapi>=0.7.2'
+        python3.10 -m pip install -r requeriments.txt
 
     - name: Run Downloader
       run: |
-        echo 'url: $CDSAPI_URL' > cdsapirc
-        echo 'key: $CDSAPI_KEY' >> cdsapirc
+        echo 'url: $CDSAPI_URL' > $(pwd)/cdsapirc
+        echo 'key: $CDSAPI_KEY' >> $(pwd)/cdsapirc
+        cat $(pwd)/cdsapirc
         CDSAPI_RC=$(pwd)/cdsapirc python3.10 download.py
         mv *.grib europe.grib
 
