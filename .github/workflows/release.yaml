@@ -33,6 +33,7 @@ jobs:
         echo "key: $CDSAPI_KEY" >> $(pwd)/cdsapirc
         cat $(pwd)/cdsapirc
         CDSAPI_RC=$(pwd)/cdsapirc python3.10 download.py
+        ls -la
         mv *.grib europe.grib
 
     - name: Release
