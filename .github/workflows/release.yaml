@@ -29,10 +29,9 @@ jobs:
 
     - name: Run Downloader
       run: |
-        env
-        echo 'url: $CDSAPI_URL' > ~/.cdsapirc
-        echo 'key: $CDSAPI_KEY' >> ~/.cdsapirc
-        python3.10 download.py
+        echo 'url: $CDSAPI_URL' > cdsapirc
+        echo 'key: $CDSAPI_KEY' >> cdsapirc
+        CDSAPI_RC=$(pwd)/cdsapirc python3.10 download.py
         mv *.grib europe.grib
 
     - name: Release
