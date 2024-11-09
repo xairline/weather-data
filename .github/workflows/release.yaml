@@ -13,7 +13,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      CDSAPI_KEY: ${{ secrets.CDSAPI_KEY }} 
+        CDSAPI_KEY: ${{ secrets.CDSAPI_KEY }} 
+        CDSAPI_URL: "https://cds.climate.copernicus.eu/api/v2"
 
     steps:
     - uses: actions/checkout@v3

@@ -1,7 +1,6 @@
 import os
 import cdsapi
 
-os.environ["CDSAPI_URL"] = "https://cds.climate.copernicus.eu/api/v2"
 dataset = "reanalysis-era5-land"
 # get day of month
 import datetime
