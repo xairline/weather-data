@@ -68,7 +68,7 @@ jobs:
         run: |
           mkdir -p output
           echo "Downloading latest release assets..."
-          urls=$(curl -s https://api.github.com/repos/${{ github.repository }}/releases/latest \
+          urls=$(curl -s https://api.github.com/repos/${{ github.repository }}/releases/daily-${{ github.run_id }} \
             | grep "browser_download_url.*\.grib2" \
             | cut -d '"' -f 4)
           for url in $urls; do
@@ -101,4 +101,4 @@ jobs:
         with:
           prerelease: true
           files: output/*.grib2
-          tag_name: daily-${{ github.run_id }}
+          tag_name: daily-${{ github.run_id }}-final
