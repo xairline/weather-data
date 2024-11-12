@@ -16,10 +16,6 @@ jobs:
                 31,32,33,34,35,36]  # Indices for 37 parallel jobs
     continue-on-error: true  # Allow individual build jobs to fail
     steps:
-      - name: Remove old artifacts
-        uses: c-hive/gha-remove-artifacts@v1
-        with:
-          age: '2 hour'
       - uses: actions/checkout@v3
 
       - name: Install Dependencies
