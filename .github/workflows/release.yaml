@@ -90,4 +90,14 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: output/*.grib2
-          prerelease: false
+          prerelease: true
+          tag_name: daily-${{ github.run_id }}
+  # make release latest
+  build-linux-latest:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          prerelease: true
+          tag_name: daily-${{ github.run_id }}
