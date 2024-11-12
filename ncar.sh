@@ -44,7 +44,7 @@ do
     for hour in 00 06 12 18
     do
         url="https://data.rda.ucar.edu/d084001/${year}/${year}${month}${day}/gfs.0p25.${date_str}${hour}.f006.grib2"
-        output_file="output/gfs.0p25.${date_str}${hour}.f006.grib2"
+        output_file="gfs.0p25.${date_str}${hour}.f006.grib2"
         echo "Downloading ${url}"
         curl -s -o "${output_file}" "${url}"
 
@@ -55,10 +55,6 @@ do
         fi
 
         # Extract SNOD variable
-        ${SCRIPT_DIR}/bin/linux-wgrib2 "${output_file}" -match_fs "SNOD" -grib -append output/snow_${date_str}.grib2
+        ${SCRIPT_DIR}/bin/linux-wgrib2 "${output_file}" -match_fs "SNOD" -grib "output/gfs.0p25.${date_str}${hour}.f006.grib2"
     done
-
-    # Remove temporary GRIB2 files
-    rm -f output/gfs.0p25.${date_str}*.grib2
-
 done
