@@ -84,7 +84,7 @@ jobs:
       - name: Run Historical Data Download
         run: |
           chmod +x ./ncar.sh
-          ./ncar.sh $start_date $num_days
+          ./ncar.sh $start_date $num_days || true
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
