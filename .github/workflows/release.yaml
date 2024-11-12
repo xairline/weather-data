@@ -86,27 +86,8 @@ jobs:
           chmod +x ./ncar.sh
           ./ncar.sh $start_date $num_days
 
-      - name: Upload Artifacts
-        if: always() || cancelled() # Always upload artifacts, even if previous steps failed
-        uses: actions/upload-artifact@v3
-        with:
-          name: "snow_data_${{ env.start_date }}"
-          path: output/*.grib2
-
-  release:
-    runs-on: ubuntu-latest
-    needs: build-linux
-    if: always()  # Run even if previous jobs failed
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@v3
-        with:
-          path: all_output
-
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
-          files: all_output/**/*.grib2
+          files: output/*.grib2
           prerelease: false
