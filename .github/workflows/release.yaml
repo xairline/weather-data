@@ -52,7 +52,7 @@ jobs:
               # Compare the file date with the date from one year ago
               if [[ "$file_date" < "$ONE_YEAR_AGO" ]]; then
                   echo "Deleting file: $file (Date: $file_date)"
-                  rm "$file"
+                  rm "$file" || true
               fi
           done
 
