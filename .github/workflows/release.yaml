@@ -16,6 +16,10 @@ jobs:
                 31,32,33,34,35,36]  # Indices for 37 parallel jobs
     continue-on-error: true  # Allow individual build jobs to fail
     steps:
+      - name: Remove old artifacts
+        uses: c-hive/gha-remove-artifacts@v1
+        with:
+          age: '2 hour'
       - uses: actions/checkout@v3
 
       - name: Install Dependencies
@@ -95,11 +99,6 @@ jobs:
     if: always()  # Run even if previous jobs failed
     steps:
       - uses: actions/checkout@v3
-
-      - name: Tag the commit
-        run: |
-          base_date=$(date -u +"%Y%m%d")
-          git tag -a "${base_date}" -m "Snow data for ${base_date}"
 
       - name: Download Artifacts
         uses: actions/download-artifact@v3
