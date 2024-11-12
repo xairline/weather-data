@@ -64,7 +64,7 @@ jobs:
           default_num_days=10
           total_days=365
           start_offset=$(( index * default_num_days ))
-          start_date=$(date -u -d "$base_date +$start_offset days" +"%Y%m%d")
+          start_date=$(date -u -d "$base_date -$start_offset days" +"%Y%m%d")
           remaining_days=$(( total_days - index * default_num_days ))
           if [ $remaining_days -ge $default_num_days ]; then
             num_days=$default_num_days
