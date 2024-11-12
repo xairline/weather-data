@@ -83,7 +83,7 @@ jobs:
           ./ncar.sh $start_date $num_days
 
       - name: Upload Artifacts
-        if: always()  # Always upload artifacts, even if previous steps failed
+        if: always() || cancelled() # Always upload artifacts, even if previous steps failed
         uses: actions/upload-artifact@v3
         with:
           name: "snow_data_${{ env.start_date }}"
