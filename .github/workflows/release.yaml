@@ -3,6 +3,10 @@ name: Release Shared Workflow
 on:
   schedule:
     - cron: '0 0 * * *'  # Runs every 24 hours
+  push:
+    tags:
+      - 'v*.*.*'
+      - 'daily'
   workflow_dispatch:
 
 jobs:
