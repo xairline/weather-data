@@ -59,7 +59,7 @@ jobs:
       - name: Calculate Start Date
         id: calc_date
         run: |
-          base_date="20221001"
+          base_date=$(date -u +"%Y%m%d")
           index=${{ matrix.index }}
           default_num_days=10
           total_days=365
