@@ -27,39 +27,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y curl
 
-      - name: Download Latest Release Assets
-        run: |
-          mkdir -p output
-          echo "Downloading latest release assets..."
-          urls=$(curl -s https://api.github.com/repos/${{ github.repository }}/releases/latest \
-            | grep "browser_download_url.*\.grib2" \
-            | cut -d '"' -f 4)
-          for url in $urls; do
-            echo "Downloading $url"
-            curl -L -o output/$(basename $url) $url
-          done
-          # file name: gfs.0p25.${date_str}${hour}.f006.grib2"
-          # remove files that are 1yr old
-          OUTPUT_DIR="output"
-
-          # Get the current date minus one year in YYYYMMDD format
-          ONE_YEAR_AGO=$(date -u -d "now -1 year" +"%Y%m%d")
-
-          # Loop through the files matching the pattern
-          for file in "${OUTPUT_DIR}/gfs.0p25."*.f006.grib2; do
-              # Extract the date from the filename
-              # Filename format: gfs.0p25.YYYYMMDDHH.f006.grib2
-              basename=$(basename "$file")
-              date_part=$(echo "$basename" | awk -F'.' '{print $3}')
-              file_date=${date_part:0:8}  # Extract YYYYMMDD
-
-              # Compare the file date with the date from one year ago
-              if [[ "$file_date" < "$ONE_YEAR_AGO" ]]; then
-                  echo "Deleting file: $file (Date: $file_date)"
-                  rm "$file" || true
-              fi
-          done
-
       - name: Calculate Start Date
         id: calc_date
         run: |
@@ -96,8 +63,41 @@ jobs:
   build-linux-latest:
     runs-on: ubuntu-latest
     steps:
+      - name: Download Latest Release Assets
+        run: |
+          mkdir -p output
+          echo "Downloading latest release assets..."
+          urls=$(curl -s https://api.github.com/repos/${{ github.repository }}/releases/latest \
+            | grep "browser_download_url.*\.grib2" \
+            | cut -d '"' -f 4)
+          for url in $urls; do
+            echo "Downloading $url"
+            curl -L -o output/$(basename $url) $url
+          done
+          # file name: gfs.0p25.${date_str}${hour}.f006.grib2"
+          # remove files that are 1yr old
+          OUTPUT_DIR="output"
+
+          # Get the current date minus one year in YYYYMMDD format
+          ONE_YEAR_AGO=$(date -u -d "now -1 year" +"%Y%m%d")
+
+          # Loop through the files matching the pattern
+          for file in "${OUTPUT_DIR}/gfs.0p25."*.f006.grib2; do
+              # Extract the date from the filename
+              # Filename format: gfs.0p25.YYYYMMDDHH.f006.grib2
+              basename=$(basename "$file")
+              date_part=$(echo "$basename" | awk -F'.' '{print $3}')
+              file_date=${date_part:0:8}  # Extract YYYYMMDD
+
+              # Compare the file date with the date from one year ago
+              if [[ "$file_date" < "$ONE_YEAR_AGO" ]]; then
+                  echo "Deleting file: $file (Date: $file_date)"
+                  rm "$file" || true
+              fi
+          done
       - name: Create Release
         uses: softprops/action-gh-release@v1
         with:
           prerelease: true
+          files: output/*.grib2
           tag_name: daily-${{ github.run_id }}

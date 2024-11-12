@@ -38,14 +38,12 @@ do
     for hour in 00 06 12 18
     do
         # Skip if snow data already exists
-        if [ -f "output/gfs.0p25.${date_str}${hour}.f006.grib2" ]; then
-            echo "Snow data for ${date_str}${hour} already exists. Skipping."
+        curl -s https://api.github.com/repos/xairline/weather-data/releases/latest | grep "gfs.0p25.${date_str}${hour}.f006.grib2" > /dev/null
+        if [ $? -eq 0 ]; then
+            echo "Skipping ${date_str}${hour}"
             continue
-        else 
-            echo "output/gfs.0p25.${date_str}${hour}.f006.grib2 - doesn't exist"
-            ls -l output
-            echo ======================== 
         fi
+        
         url="https://data.rda.ucar.edu/d084001/${year}/${year}${month}${day}/gfs.0p25.${date_str}${hour}.f006.grib2"
         output_file="gfs.0p25.${date_str}${hour}.f006.grib2"
         echo "Downloading ${url}"
