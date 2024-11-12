@@ -18,27 +18,23 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    - uses: actions/setup-python@v3
-      with:
-        python-version: '3.12'
+    # - uses: actions/setup-python@v3
+    #   with:
+    #     python-version: '3.12'
 
-    - name: Setup 
-      run: |
-        python3.12 -m pip install -r requirements.txt
+    # - name: Setup 
+    #   run: |
+    #     python3.12 -m pip install -r requirements.txt
 
-    - name: Run Downloader
+    - name: Run Historical Data Download
       run: |
-        echo "url: $CDSAPI_URL" > $(pwd)/cdsapirc
-        echo "key: ${{ secrets.CDSAPI_KEY }}"  >> $(pwd)/cdsapirc
-        cat $(pwd)/cdsapirc
-        CDSAPI_RC=$(pwd)/cdsapirc python3.12 download.py
-        ls -la
-        mv *.grib europe.grib
+        ./ncar.sh
 
     - name: Release
       uses: softprops/action-gh-release@v1
       with:
-        files: autoortho_osx_*.bin
+        files: |
+          output/*.grib
         prerelease: false
 
 
