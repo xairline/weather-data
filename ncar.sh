@@ -31,18 +31,17 @@ do
     month=${date_str:4:2}
     day=${date_str:6:2}
 
-    # Skip if snow data already exists
-    if [ -f "output/snow_${date_str}.grib2" ]; then
-        echo "Snow data for ${date_str} already exists. Skipping."
-        continue
-    fi
-
     # Remove any existing temporary GRIB2 files
     rm -f output/gfs.0p25.${date_str}*.grib2
 
     # Download data for 00, 06, 12, 18 UTC
     for hour in 00 06 12 18
     do
+        # Skip if snow data already exists
+        if [ -f "output/gfs.0p25.${date_str}${hour}.f006.grib2" ]; then
+            echo "Snow data for ${date_str}${hour} already exists. Skipping."
+            continue
+        fi
         url="https://data.rda.ucar.edu/d084001/${year}/${year}${month}${day}/gfs.0p25.${date_str}${hour}.f006.grib2"
         output_file="gfs.0p25.${date_str}${hour}.f006.grib2"
         echo "Downloading ${url}"
